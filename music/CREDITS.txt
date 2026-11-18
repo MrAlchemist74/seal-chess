@@ -1,0 +1,8 @@
+Музыка — всё CC0 (public domain), OpenGameArt.org:
+map.mp3    — "Snow Theme" (loop)            https://opengameart.org/content/snow-theme
+room.mp3   — "Hot Springs Town" by Koto     https://opengameart.org/node/155383
+chess.mp3  — "Calm Track" (loop)            https://opengameart.org/content/calm-track
+stream.mp3 — "Cozy Puzzle In-Game 2" by MintoDog  https://opengameart.org/node/185146
+pin.mp3    — "Cozy Puzzle Title" by MintoDog      https://opengameart.org/node/183286
+hut.mp3    — "Apple Cider"                  https://opengameart.org/node/157225
+Пережато в mp3 96 кбит/с.
