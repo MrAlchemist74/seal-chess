@@ -78,34 +78,100 @@ h1 { font-size: 20px; margin: 4px 0 2px; letter-spacing: .5px; }
 .legend .pc { width: 72px; height: 72px; background: var(--light); border-radius: 10px; }
 .legend b { display: block; } .legend span { color: var(--muted); font-size: 13px; }
 .result { font-size: 22px; font-weight: 700; margin: 4px 0 8px; }
+
+/* ---------- UI v2: хаб игр, панели, анимации ---------- */
+:root { --r: 16px; --gap: 10px; --ice: #bfe3f5; --gold: #f2c14e; --danger: #ff6b6b; --glass: rgba(23,37,51,.72); --line: rgba(255,255,255,.08); }
+body { padding: 0 12px 24px; }
+.appbar { position: sticky; top: 0; z-index: 6; display: flex; align-items: center; gap: 8px; width: 100%; max-width: 480px; padding: 10px 0 8px;
+  background: linear-gradient(180deg, #0a1520 70%, rgba(10,21,32,0)); }
+.appbar h1 { margin: 0; font-size: 18px; flex: 1; text-align: center; }
+.iconbtn { width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 18px;
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .12s, background .2s; }
+.iconbtn:active { transform: scale(.92); } .iconbtn.hidden { visibility: hidden; }
+.screen { animation: none; } .screen.on { animation: screenIn .28s cubic-bezier(.2,.8,.3,1); }
+@keyframes screenIn { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+.hero { display: flex; gap: 12px; align-items: center; background: linear-gradient(135deg, #18324a, #0f2234); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 12px; margin: 4px 0 14px; }
+.hero .ava { width: 56px; height: 56px; flex: none; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #2c4a63, #13263a); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.hero .ava .pc { width: 64px; height: 64px; }
+.hero .t b { display: block; font-size: 16px; } .hero .t span { color: var(--muted); font-size: 13px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+.tile { position: relative; border: 1px solid var(--line); border-radius: var(--r); padding: 12px 12px 14px; text-align: left; color: var(--text); cursor: pointer;
+  background: linear-gradient(160deg, #1c3448, #13263a); overflow: hidden; min-height: 150px; transition: transform .15s, box-shadow .2s; }
+.tile:active { transform: scale(.97); }
+.tile .art { height: 86px; display: flex; align-items: flex-end; justify-content: center; margin: -4px -4px 6px; }
+.tile .art .pc { height: 92px; width: 92px; filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); transition: transform .3s; }
+.tile:hover .art .pc { transform: translateY(-3px) rotate(-3deg); }
+.tile b { display: block; font-size: 15px; } .tile span { color: var(--muted); font-size: 12px; }
+.tile.soon { opacity: .55; cursor: default; } .tile .badge { position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 3px 7px; border-radius: 999px;
+  background: rgba(255,255,255,.1); color: var(--muted); letter-spacing: .3px; }
+.tile.hot { box-shadow: 0 0 0 1px rgba(92,200,255,.35), 0 8px 24px rgba(30,120,170,.25); }
+.player { display: flex; align-items: center; gap: 8px; padding: 6px 10px; margin: 8px 0; border-radius: 14px; background: var(--glass); border: 1px solid var(--line);
+  transition: box-shadow .25s, background .25s; }
+.player .ava { width: 30px; height: 30px; border-radius: 50%; background: #1d3448; display: flex; align-items: center; justify-content: center; overflow: hidden; flex: none; }
+.player .ava .pc { width: 36px; height: 36px; }
+.player .who { flex: 1; font-size: 14px; }
+.player.turn { background: rgba(92,200,255,.14); box-shadow: 0 0 0 1px rgba(92,200,255,.55), 0 0 18px rgba(92,200,255,.18); }
+.player.turn .who::after { content: " · ходит"; color: var(--accent); font-weight: 500; }
+.bubble { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; }
+.bubble .ava { width: 34px; height: 34px; border-radius: 50%; flex: none; background: #1d3448; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.bubble .ava .pc { width: 40px; height: 40px; }
+.bubble .msg { position: relative; flex: 1; background: var(--panel); border: 1px solid var(--line); border-radius: 4px 14px 14px 14px; padding: 9px 12px; min-height: 38px; font-size: 14px; }
+.bubble .msg .n { display: block; color: var(--accent); font-weight: 600; font-size: 12px; margin-bottom: 2px; }
+.bubble .msg.pop { animation: pop .3s cubic-bezier(.2,1.4,.4,1); }
+@keyframes pop { from { transform: scale(.96); opacity: .4 } to { transform: none; opacity: 1 } }
+.caret::after { content: "▍"; animation: blink 1s steps(1) infinite; color: var(--muted); }
+@keyframes blink { 50% { opacity: 0 } }
+.actions { display: grid; grid-template-columns: repeat(3, 1fr) 46px; gap: 8px; margin-top: 10px; }
+.act { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--text); padding: 8px 4px; cursor: pointer; font-size: 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; transition: transform .12s; }
+.act i { font-style: normal; font-size: 18px; } .act:active { transform: scale(.94); }
+.act.danger { color: var(--danger); }
+.sq.enter .pc { animation: drop .45s cubic-bezier(.2,1.3,.4,1) backwards; }
+@keyframes drop { from { transform: translateY(-40%) scale(.7); opacity: 0 } to { transform: none; opacity: 1 } }
+.sq.chk::before { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .35 } }
+.modal { align-items: flex-end; padding: 0; background: rgba(5,10,15,.55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+.modal .card { border-radius: 22px 22px 0 0; max-width: 520px; padding: 10px 16px 22px; animation: sheetUp .32s cubic-bezier(.2,.9,.3,1); }
+.modal .card::before { content: ""; display: block; width: 38px; height: 4px; border-radius: 4px; background: rgba(255,255,255,.18); margin: 0 auto 12px; }
+@keyframes sheetUp { from { transform: translateY(100%) } to { transform: none } }
+.sheet-title { font-size: 18px; font-weight: 700; margin: 0 0 4px; } .sheet-sub { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+.modal .card .btn { background: #213a50; border: 1px solid var(--line); } .modal .card .btn.main { background: var(--accent); }
+.confetti { position: fixed; top: -12px; width: 8px; height: 8px; border-radius: 50%; background: #fff; pointer-events: none; z-index: 20; }
 </style>
 </head>
 <body>
+<div class="appbar"><button class="iconbtn hidden" id="backBtn" aria-label="Назад">←</button><h1 id="title">🦭 Тюлений протокол</h1><button class="iconbtn" id="muteTop" aria-label="Звук">🔊</button></div>
 <div class="wrap">
-  <h1>🦭 Тюленьи шахматы</h1>
-  <div class="sub">секретный протокол Сергея Дроида</div>
-
   <div id="menu" class="screen on">
-    <button class="btn main" id="droidBtn"><b>Против Дроида</b><span>выбери, в какой он сегодня форме</span></button>
-    <div class="levels" id="levels" style="display:none"></div>
-    <button class="btn" data-start="duo"><b>Вдвоём на одном телефоне</b><span>ходите по очереди, Дроид комментирует</span></button>
-    <button class="btn" id="legendBtn"><b>Кто есть кто</b><span>какой тюлень какая фигура</span></button>
+    <div class="hero"><div class="ava" id="heroAva"></div><div class="t"><b>Секретный отсек Дроида</b><span id="heroLine">тут я гоняю тюленей, пока вы спите</span></div></div>
+    <div class="tiles" id="tiles"></div>
   </div>
 
   <div id="game" class="screen">
-    <div class="bar"><span class="who" id="topName"></span><span class="caps" id="topCaps"></span></div>
+    <div class="player" id="topCard"><div class="ava" id="topAva"></div><span class="who" id="topName"></span><span class="caps" id="topCaps"></span></div>
     <div class="boardwrap"><div id="board"></div><div class="snowfall" id="snowfall"></div></div>
-    <div class="bar"><span class="who" id="botName"></span><span class="caps" id="botCaps"></span></div>
-    <div class="talk"><span class="n">Дроид:</span><span id="say"></span></div>
-    <div class="row">
-      <button class="btn" id="undoBtn">↶ Отменить</button>
-      <button class="btn" id="flipBtn">⇅ Перевернуть</button>
-      <button class="btn" id="muteBtn">🔊</button>
-      <button class="btn" id="quitBtn">✕ Сдаться</button>
+    <div class="player" id="botCard"><div class="ava" id="botAva"></div><span class="who" id="botName"></span><span class="caps" id="botCaps"></span></div>
+    <div class="bubble"><div class="ava" id="droidAva"></div><div class="msg" id="msg"><span class="n">Сергей Дроид</span><span id="say"></span></div></div>
+    <div class="actions">
+      <button class="act" id="undoBtn"><i>↶</i>Ход назад</button>
+      <button class="act" id="flipBtn"><i>⇅</i>Развернуть</button>
+      <button class="act" id="legendInGame"><i>🦭</i>Кто есть кто</button>
+      <button class="act danger" id="quitBtn" aria-label="Сдаться"><i>⚑</i></button>
     </div>
+    <button class="btn" id="muteBtn" style="display:none">🔊</button>
   </div>
 </div>
 
+<div class="modal" id="chessModal"><div class="card"><div class="sheet-title">Тюленьи шахматы</div><div class="sheet-sub">с кем играем?</div>
+  <div class="sheet-sub" style="margin:8px 0 6px;color:var(--text)">Против Дроида — выбери, в какой он форме</div>
+  <div class="levels" id="levels"></div>
+  <button class="btn" data-start="duo"><b>Вдвоём на одном телефоне</b><span>ходите по очереди, Дроид комментирует</span></button>
+  <button class="btn" id="legendBtn"><b>Кто есть кто</b><span>какой тюлень какая фигура</span></button>
+</div></div>
+<div class="modal" id="quitModal"><div class="card"><div class="sheet-title">Сдаться?</div><div class="sheet-sub">Дроид это запомнит</div>
+  <button class="btn" style="text-align:center;color:var(--danger)" id="quitYes">Да, сдаюсь</button>
+  <button class="btn" style="text-align:center" id="quitNo">Играем дальше</button></div></div>
 <div class="modal" id="promoModal"><div class="card"><h2>Белёк вырос. В кого?</h2><div class="promo" id="promoChoices"></div></div></div>
 <div class="modal" id="legendModal"><div class="card"><h2>Кто есть кто</h2><div style="color:var(--muted);font-size:13px;margin:-4px 0 10px">нажми на тюленя — услышишь, как он кричит</div><div class="legend" id="legend"></div>
   <button class="btn main" style="text-align:center;margin-top:14px" id="legendClose">Понял</button></div></div>
@@ -389,7 +455,14 @@ const LINES = {
   resign: ["сдался? слабак. так и запишем", "белый флаг принят. тюлени ржут"],
   undo: ["переходить нельзя вообще-то. ладно, один раз", "отменил? так и запишем: жульё"],
 };
-function say(t) { document.getElementById("say").textContent = t; }
+let sayTimer = null;
+function say(t) {
+  const el = document.getElementById("say"), box = document.getElementById("msg");
+  clearInterval(sayTimer); el.textContent = ""; el.classList.add("caret");
+  box.classList.remove("pop"); void box.offsetWidth; box.classList.add("pop");
+  let i = 0;
+  sayTimer = setInterval(() => { el.textContent = t.slice(0, ++i); if (i >= t.length) { clearInterval(sayTimer); el.classList.remove("caret"); } }, 18);
+}
 
 // ---------- сложность: Stockfish ----------
 // Уровень 0 — свой простенький движок наугад; 1–5 — Stockfish 10 (stockfish.js, GPLv3) с ограничением Skill Level и времени.
@@ -521,17 +594,34 @@ function start(m) {
   capsBy.w = []; capsBy.b = [];
   show("game");
   say(pick(mode === "droid" ? LINES.start : LINES.startDuo));
+  hide("chessModal");
   render(); snowfall();
+  boardEl.querySelectorAll(".sq").forEach((sq, i) => { if (sq.querySelector(".pc")) { sq.classList.add("enter"); sq.querySelector(".pc").style.animationDelay = (Math.floor(i / 8) % 4) * 60 + (i % 8) * 25 + "ms"; } });
+  setTimeout(() => boardEl.querySelectorAll(".sq.enter").forEach(sq => sq.classList.remove("enter")), 1200);
 }
-function show(id) { for (const el of document.querySelectorAll(".screen")) el.classList.toggle("on", el.id === id); }
+function show(id) {
+  for (const el of document.querySelectorAll(".screen")) el.classList.toggle("on", el.id === id);
+  const inGame = id !== "menu";
+  document.getElementById("backBtn").classList.toggle("hidden", !inGame);
+  document.getElementById("title").textContent = inGame ? "🦭 Тюленьи шахматы" : "🦭 Тюлений протокол";
+  if (tg && tg.BackButton) try { inGame ? tg.BackButton.show() : tg.BackButton.hide(); } catch (e) {}
+  if (!inGame) document.getElementById("droidAva").innerHTML = seal("k", "b");
+renderHub();
+}
+function openSheet(id) { document.getElementById(id).classList.add("on"); }
+document.querySelectorAll(".modal").forEach(m => m.addEventListener("click", e => { if (e.target === m && m.id !== "endModal" && m.id !== "promoModal") m.classList.remove("on"); }));
 function names() {
   if (mode === "droid") return { w: "Ты (белые)", b: `Сергей Дроид · ${LEVELS[level].name.toLowerCase()}` };
   return { w: "Белые", b: "Чёрные" };
 }
 function render() {
   const nm = names(), bottom = flipped ? "b" : "w", top = opp(bottom);
-  document.getElementById("topName").textContent = nm[top] + (st.turn === top && !over ? " ●" : "");
-  document.getElementById("botName").textContent = nm[bottom] + (st.turn === bottom && !over ? " ●" : "");
+  document.getElementById("topName").textContent = nm[top];
+  document.getElementById("botName").textContent = nm[bottom];
+  document.getElementById("topCard").classList.toggle("turn", st.turn === top && !over);
+  document.getElementById("botCard").classList.toggle("turn", st.turn === bottom && !over);
+  document.getElementById("topAva").innerHTML = seal(mode === "droid" && top === "b" ? "k" : "p", top);
+  document.getElementById("botAva").innerHTML = seal(mode === "droid" && bottom === "b" ? "k" : "p", bottom);
   document.getElementById("topCaps").innerHTML = capsBy[top].map(p => seal(p.t, p.c)).join("");
   document.getElementById("botCaps").innerHTML = capsBy[bottom].map(p => seal(p.t, p.c)).join("");
   const chk = inCheck(st, st.turn) ? kingPos(st, st.turn) : null;
@@ -648,6 +738,7 @@ function finish(kind, resigned) {
   document.getElementById("endTitle").textContent = title;
   document.getElementById("endText").textContent = `${text}, ходов: ${Math.ceil(nmoves / 2)}. Дроид: «${line}»`;
   document.getElementById("sendBtn").style.display = tg && tg.initData !== undefined && tg.platform !== "unknown" ? "block" : "none";
+  if (result === "win" || mode === "duo") confetti();
   setTimeout(() => document.getElementById("endModal").classList.add("on"), 600);
   lastEnd = { kind: resigned ? "resign" : kind };
 }
@@ -655,7 +746,43 @@ let lastEnd = null;
 
 document.getElementById("levels").innerHTML = LEVELS.map((L, i) =>
   `<button class="btn${i === 3 ? " main" : ""}" data-start="droid${i}"><b>${L.name}</b><span>${L.sub}</span></button>`).join("");
-document.getElementById("droidBtn").onclick = () => { sfInit(); const lv = document.getElementById("levels"); lv.style.display = lv.style.display === "none" ? "grid" : "none"; };
+const GAMES = [
+  { id: "chess", title: "Тюленьи шахматы", sub: "против Дроида или вдвоём", art: ["k", "w"], hot: true },
+  { id: "solitaire", title: "Тюлений пасьянс", sub: "косынка с тюленями", art: ["q", "w"], soon: true },
+];
+const HERO_LINES = ["тут я гоняю тюленей, пока вы спите", "секретный протокол. никому ни слова", "реактор прогрет. выбирай игру, органика"];
+function renderHub() {
+  document.getElementById("heroAva").innerHTML = seal("p", "w");
+  document.getElementById("heroLine").textContent = pick(HERO_LINES);
+  const going = st && !over && hist.length;
+  document.getElementById("tiles").innerHTML = GAMES.map(g => `<button class="tile${g.soon ? " soon" : ""}${g.hot ? " hot" : ""}" data-game="${g.id}">
+    ${g.soon ? '<span class="badge">СКОРО</span>' : going && g.id === "chess" ? '<span class="badge" style="color:var(--accent)">ПАРТИЯ ИДЁТ</span>' : ""}
+    <div class="art">${seal(g.art[0], g.art[1])}</div><b>${g.title}</b><span>${g.id === "chess" && going ? "нажми, чтобы продолжить" : g.sub}</span></button>`).join("");
+}
+document.getElementById("tiles").addEventListener("click", e => {
+  const t = e.target.closest(".tile"); if (!t || t.classList.contains("soon")) return;
+  if (t.dataset.game === "chess") {
+    if (st && !over && hist.length) return show("game");
+    sfInit(); openSheet("chessModal");
+  }
+});
+document.getElementById("backBtn").onclick = () => show("menu");
+if (tg && tg.BackButton) try { tg.BackButton.onClick(() => show("menu")); } catch (e) {}
+document.getElementById("legendInGame").onclick = () => document.getElementById("legendBtn").click();
+document.getElementById("muteTop").onclick = () => document.getElementById("muteBtn").click();
+document.getElementById("quitYes").onclick = () => { hide("quitModal"); finish(null, mode === "droid" ? "w" : st.turn); };
+document.getElementById("quitNo").onclick = () => hide("quitModal");
+function confetti() {
+  for (let i = 0; i < 46; i++) {
+    const d = document.createElement("div"); d.className = "confetti";
+    d.style.left = rnd(0, 100) + "vw"; d.style.width = d.style.height = rnd(4, 9) + "px";
+    d.style.background = pick(["#ffffff", "#bfe3f5", "#f2c14e", "#9ed8ff"]);
+    document.body.appendChild(d);
+    d.animate([{ transform: "translate(0,0) rotate(0)" }, { transform: `translate(${rnd(-60, 60)}px, 105vh) rotate(${rnd(180, 720)}deg)` }],
+              { duration: rnd(1800, 3200), delay: rnd(0, 500), easing: "cubic-bezier(.3,.1,.5,1)" }).onfinish = () => d.remove();
+  }
+}
+renderHub();
 document.querySelectorAll("[data-start]").forEach(b => b.onclick = () => start(b.dataset.start));
 document.getElementById("flipBtn").onclick = () => { flipped = !flipped; render(); };
 document.getElementById("undoBtn").onclick = () => {
@@ -666,11 +793,10 @@ document.getElementById("undoBtn").onclick = () => {
   say(pick(LINES.undo)); render();
 };
 document.getElementById("quitBtn").onclick = () => {
-  if (over) return show("menu");
-  if (!hist.length) return show("menu");
-  finish(null, mode === "droid" ? "w" : st.turn);
+  if (over || !hist.length) return show("menu");
+  openSheet("quitModal");
 };
-document.getElementById("againBtn").onclick = () => { hide("endModal"); show("menu"); };
+document.getElementById("againBtn").onclick = () => { hide("endModal"); show("menu"); openSheet("chessModal"); };
 document.getElementById("sendBtn").onclick = () => {
   const data = { g: "seals", mode, lvl: level, lvlName: mode === "droid" ? LEVELS[level].name : "", result, end: lastEnd && lastEnd.kind, moves: Math.ceil(nmoves / 2) };
   try { tg.sendData(JSON.stringify(data)); } catch (e) { say("не отправилось: открой игру кнопкой у Дроида в лс"); hide("endModal"); }
@@ -681,8 +807,8 @@ document.getElementById("legendBtn").onclick = () => {
   document.getElementById("legendModal").classList.add("on");
 };
 const muteBtn = document.getElementById("muteBtn");
-muteBtn.textContent = muted ? "🔇" : "🔊";
-muteBtn.onclick = () => { muted = !muted; muteBtn.textContent = muted ? "🔇" : "🔊"; try { localStorage.setItem("seals_mute", muted ? "1" : "0"); } catch (e) {} if (!muted) voice("p"); };
+muteBtn.textContent = muted ? "🔇" : "🔊"; document.getElementById("muteTop").textContent = muted ? "🔇" : "🔊";
+muteBtn.onclick = () => { muted = !muted; muteBtn.textContent = muted ? "🔇" : "🔊"; document.getElementById("muteTop").textContent = muted ? "🔇" : "🔊"; try { localStorage.setItem("seals_mute", muted ? "1" : "0"); } catch (e) {} if (!muted) voice("p"); };
 document.getElementById("legend").addEventListener("click", e => { const row = e.target.closest("[data-t]"); if (row) { const was = muted; muted = false; voice(row.dataset.t); muted = was; } });
 document.getElementById("legendClose").onclick = () => hide("legendModal");
 window.__seals = { initial, legal, make, status, bestMove, inCheck }; // для проверки
